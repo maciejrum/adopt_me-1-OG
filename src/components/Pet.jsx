@@ -1,3 +1,5 @@
+import {Link} from "react-router-dom";
+
 function Pet({ name, breed, animal, id, images, location }) {
   // return (
   //   <div>
@@ -19,7 +21,7 @@ function Pet({ name, breed, animal, id, images, location }) {
   }
 
   return (
-    <a href={`/details/${id}`} className="pet">
+    <Link to={`/details/${id}`} className="pet">
       <div className="image-container">
         <img src={hero} alt={name} />
       </div>
@@ -27,7 +29,7 @@ function Pet({ name, breed, animal, id, images, location }) {
         <h1>{name}</h1>
         <h2>{`${animal} — ${breed} — ${location}`}</h2>
       </div>
-    </a>
+    </Link>
   );
 }
 

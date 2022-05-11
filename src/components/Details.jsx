@@ -1,7 +1,9 @@
 import { useParams } from "react-router-dom";
-import { Component } from "react";
+import {Component, useContext} from "react";
 import Carousel from "./Carousel";
 import ErrorBoundary from "./ErrorBoundary";
+import ThemeContext from "./ThemeContext";
+import Modal from "./Modal";
 
 class Details extends Component {
   state = {
@@ -19,6 +21,11 @@ class Details extends Component {
     this.setState(Object.assign({ loading: false }, data.pets[0]));
   }
 
+  toggleModal = () => {
+    this.setState({showModal: !this.state.showModal})
+}
+
+
   render() {
     if (this.state.loading) {
       return <h2>Loading</h2>;
@@ -33,8 +40,27 @@ class Details extends Component {
           <h2>
             {animal} - {breed} - {city}, {state}
           </h2>
-          <button>Adopt Me!</button>
+          <ThemeContext.Consumer>
+            {
+              ([theme]) => (
+                 <button style={{backgroundColor: theme}} onClick={this.toggleModal}>Adopt {name}</button>
+              )
+            }
+          </ThemeContext.Consumer>
           <p>{description}</p>
+          {
+            this.state.showModal ? (
+                (<Modal>
+                  <div>
+                    <h2>Would you like to adopt {name}?</h2>
+                    <div className="buttons">
+                      <a href="https://bit.ly/pet-adopt"><button>Yes</button></a>
+                      <button onClick={this.toggleModal}>No</button>
+                    </div>
+                  </div>
+                </Modal>)
+            ) : null
+          }
         </div>
         <Carousel images={images} />
       </div>
